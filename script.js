@@ -238,7 +238,7 @@ createBackBtn.addEventListener('click', () => {
 });
 
 resultBackBtn.addEventListener('click', () => {
-    card.classList.remove('active-result', 'active-loading');
+    card.classList.remove('active-result');
     card.classList.add('active-check');
     ticketInput.value = '';
     loadingContent.style.display = 'block';
@@ -285,8 +285,6 @@ checkBtn.addEventListener('click', () => {
 
         loadingContent.style.display = 'none';
         resultContent.style.display = 'block';
-        card.classList.remove('active-loading');
-        card.classList.add('active-result');
 
         showNotification('Успешно!', `Обращение №${ticketNum} найдено`);
     }, loadingTime);

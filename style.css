@@ -138,10 +138,11 @@ input,
   color: #fff;
   font-size: 14px;
   text-align: center;
-  width: calc(100% - 28px);
-  max-width: 400px;
+  width: 100%;
+  max-width: 100%;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 input::placeholder { color: #888; }
@@ -271,7 +272,15 @@ input:focus,
 }
 
 /* ---------- Кнопки ---------- */
-.buttons { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
+.buttons { 
+  display: flex; 
+  gap: 8px; 
+  margin-top: 12px; 
+  flex-wrap: wrap; 
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
 
 .btn {
   padding: 10px 24px;
@@ -284,6 +293,9 @@ input:focus,
   transition: 0.2s;
   font-size: 13px;
   white-space: nowrap;
+  flex: 1;
+  min-width: 80px;
+  box-sizing: border-box;
 }
 
 .btn:hover { background: #e5e5e5; }
@@ -310,8 +322,9 @@ input:focus,
 /* ========== КРАСИВЫЙ КАСТОМНЫЙ SELECT ========== */
 .custom-select-wrapper {
   position: relative;
-  width: calc(100% - 28px);
-  max-width: 400px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .custom-select {
@@ -388,7 +401,14 @@ input:focus,
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   max-height: 240px;
   overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.select-dropdown::-webkit-scrollbar {
+  display: none;
 }
 
 .select-dropdown.active {
@@ -426,7 +446,12 @@ input:focus,
 }
 
 /* ---------- Menu buttons ---------- */
-.menu-buttons { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.menu-buttons { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px; 
+  width: 100%;
+}
 .menu-btn {
   width: 100%;
   padding: 11px 16px;
@@ -438,6 +463,7 @@ input:focus,
   cursor: pointer;
   transition: 0.2s;
   font-size: 13px;
+  box-sizing: border-box;
 }
 .menu-btn:hover { background: #e5e5e5; }
 .menu-btn.success { background: #00c853; color: #fff; }

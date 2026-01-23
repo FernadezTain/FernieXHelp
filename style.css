@@ -87,6 +87,7 @@ body {
     opacity: 0;
     transform: translateX(100%);
     pointer-events: none;
+    min-width: 0;
 }
 
 /* ГЛАВНОЕ МЕНЮ */
@@ -197,7 +198,9 @@ body {
 }
 
 h1, h2 { 
-    color: #fff; 
+    color: #fff;
+    text-align: center;
+    word-break: break-word;
 }
 
 p { 
@@ -247,7 +250,7 @@ input:focus, select:focus {
 }
 
 .btn {
-    padding: 10px 26px;
+    padding: 12px 32px;
     border-radius: 12px;
     border: none;
     background: #fff;
@@ -255,6 +258,7 @@ input:focus, select:focus {
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
+    font-size: 16px;
 }
 
 .btn:hover { 

@@ -63,7 +63,11 @@ body {
 
 .card-face {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: auto;
+  transform: translateX(calc(-50% + 100%));
   padding: 20px 16px;
   display: flex;
   flex-direction: column;
@@ -73,57 +77,53 @@ body {
   transition: all 0.5s cubic-bezier(.4,0,.2,1);
   pointer-events: none;
   min-width: 0;
-  transform: translateX(100%);
   opacity: 0;
   width: 100%;
-  left: 0 !important;
-  right: 0 !important;
-  margin: 0 auto !important;
   box-sizing: border-box;
 }
 
 /* Главная карта по умолчанию */
 .card-main {
-  transform: translateX(0);
+  transform: translateX(calc(-50% + 0%));
   opacity: 1;
   pointer-events: auto;
 }
 
 /* Анимация навигации между картами */
-.card.active-main .card-main { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
+.card.active-main .card-main { transform: translateX(calc(-50% + 0%)); opacity: 1; filter: blur(0); pointer-events: auto; }
 .card.active-main .card-menu,
 .card.active-main .card-check,
 .card.active-main .card-result,
 .card.active-main .card-create,
-.card.active-main .card-loading { transform: translateX(100%); opacity: 0; filter: blur(6px); pointer-events: none; }
+.card.active-main .card-loading { transform: translateX(calc(-50% + 100%)); opacity: 0; filter: blur(6px); pointer-events: none; }
 
-.card.active-menu .card-main { transform: translateX(-100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-.card.active-menu .card-menu { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
+.card.active-menu .card-main { transform: translateX(calc(-50% - 100%)); opacity: 0; filter: blur(6px); pointer-events: none; }
+.card.active-menu .card-menu { transform: translateX(calc(-50% + 0%)); opacity: 1; filter: blur(0); pointer-events: auto; }
 .card.active-menu .card-check,
 .card.active-menu .card-result,
 .card.active-menu .card-create,
-.card.active-menu .card-loading { transform: translateX(100%); opacity: 0; filter: blur(6px); pointer-events: none; }
+.card.active-menu .card-loading { transform: translateX(calc(-50% + 100%)); opacity: 0; filter: blur(6px); pointer-events: none; }
 
 .card.active-check .card-main,
-.card.active-check .card-menu { transform: translateX(-100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-.card.active-check .card-check { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
+.card.active-check .card-menu { transform: translateX(calc(-50% - 100%)); opacity: 0; filter: blur(6px); pointer-events: none; }
+.card.active-check .card-check { transform: translateX(calc(-50% + 0%)); opacity: 1; filter: blur(0); pointer-events: auto; }
 .card.active-check .card-result,
 .card.active-check .card-create,
-.card.active-check .card-loading { transform: translateX(100%); opacity: 0; filter: blur(6px); pointer-events: none; }
+.card.active-check .card-loading { transform: translateX(calc(-50% + 100%)); opacity: 0; filter: blur(6px); pointer-events: none; }
 
 .card.active-loading .card-main,
 .card.active-loading .card-menu,
 .card.active-loading .card-check,
 .card.active-loading .card-create,
-.card.active-loading .card-result { transform: translateX(-100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-.card.active-loading .card-loading { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
+.card.active-loading .card-result { transform: translateX(calc(-50% - 100%)); opacity: 0; filter: blur(6px); pointer-events: none; }
+.card.active-loading .card-loading { transform: translateX(calc(-50% + 0%)); opacity: 1; filter: blur(0); pointer-events: auto; }
 
 .card.active-create .card-main,
-.card.active-create .card-menu { transform: translateX(-100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-.card.active-create .card-create { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
+.card.active-create .card-menu { transform: translateX(calc(-50% - 100%)); opacity: 0; filter: blur(6px); pointer-events: none; }
+.card.active-create .card-create { transform: translateX(calc(-50% + 0%)); opacity: 1; filter: blur(0); pointer-events: auto; }
 .card.active-create .card-check,
 .card.active-create .card-result,
-.card.active-create .card-loading { transform: translateX(100%); opacity: 0; filter: blur(6px); pointer-events: none; }
+.card.active-create .card-loading { transform: translateX(calc(-50% + 100%)); opacity: 0; filter: blur(6px); pointer-events: none; }
 
 h1, h2 { color: #fff; text-align: center; word-break: break-word; }
 h1 { font-size: 20px; margin-bottom: 5px; }

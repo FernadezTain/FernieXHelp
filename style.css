@@ -241,6 +241,7 @@ input, select {
     text-align: center;
     width: 70%;
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 input::placeholder {
@@ -248,12 +249,25 @@ input::placeholder {
 }
 
 select {
-    color: #888;
+    color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%23888' d='M1.41 0L6 4.59L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
 }
 
 select option {
     background: #1b1b1b;
     color: #fff;
+    padding: 12px;
+}
+
+select:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 input:focus, select:focus {
@@ -261,6 +275,10 @@ input:focus, select:focus {
     border-color: #00c853;
     box-shadow: 0 0 10px rgba(0, 200, 83, 0.4);
     background: rgba(255, 255, 255, 0.08);
+}
+
+select:focus {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%2300c853' d='M1.41 0L6 4.59L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0z'/%3e%3c/svg%3e");
 }
 
 .buttons {
@@ -362,20 +380,41 @@ input:focus, select:focus {
     max-height: 200px;
     overflow-y: auto;
     margin-bottom: 15px;
+    padding-right: 8px;
 }
 
+/* Красивая полоса прокрутки для timeline */
 .timeline::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .timeline::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    margin: 4px 0;
 }
 
 .timeline::-webkit-scrollbar-thumb {
-    background: rgba(0, 200, 83, 0.3);
-    border-radius: 3px;
+    background: linear-gradient(180deg, #00c853, #00a340);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 0 0 6px rgba(0, 200, 83, 0.5);
+}
+
+.timeline::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #00e563, #00c853);
+    box-shadow: inset 0 0 8px rgba(0, 200, 83, 0.7);
+}
+
+.timeline::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg, #00a340, #008a35);
+}
+
+/* Firefox scrollbar */
+.timeline {
+    scrollbar-width: thin;
+    scrollbar-color: #00c853 rgba(255, 255, 255, 0.03);
 }
 
 .timeline-item {
@@ -395,6 +434,7 @@ input:focus, select:focus {
     flex-shrink: 0;
     position: absolute;
     left: 0;
+    box-shadow: 0 0 8px rgba(0, 200, 83, 0.6);
 }
 
 .timeline-content {
@@ -419,7 +459,7 @@ input:focus, select:focus {
     top: 17px;
     width: 2px;
     height: 20px;
-    background: rgba(0, 200, 83, 0.2);
+    background: linear-gradient(180deg, rgba(0, 200, 83, 0.3), rgba(0, 200, 83, 0.1));
 }
 
 .menu-buttons {
@@ -567,6 +607,7 @@ input:focus, select:focus {
     color: #aaa;
     font-size: 14px;
 }
+
 .card-face {
     transform: translateX(100%);
     opacity: 0;

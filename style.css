@@ -601,3 +601,14 @@ select option {
     font-size: 16px;
   }
 }
+/* ---------- Убираем видимую полосу прокрутки ---------- */
+#resultContent .timeline {
+  overflow-y: auto; /* скролл работает, если контента больше */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Webkit (Chrome, Edge, Safari) */
+#resultContent .timeline::-webkit-scrollbar {
+  width: 0px; /* полностью скрываем полосу */
+  background: transparent; /* прозрачная */
+}

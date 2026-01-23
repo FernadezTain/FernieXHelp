@@ -26,11 +26,6 @@ const notificationContainer = document.getElementById('notification-container');
 const loadingContent = document.getElementById('loadingContent');
 const resultContent = document.getElementById('resultContent');
 
-// ЭЛЕМЕНТ ДЛЯ ЗАГОЛОВКА
-const ticketNumberElement = document.getElementById('ticketNumber');
-// Элемент timeline для управления скроллом
-const timelineElement = document.getElementById('timeline');
-
 const faces = document.querySelectorAll('.card-face');
 const faceMain = document.querySelector('.card-main');
 const faceMenu = document.querySelector('.card-menu');
@@ -43,12 +38,6 @@ let searchTimeout = null;
 let errorTimeout = null;
 let activeNotification = null;
 let notificationHideTimeout = null;
-let isScrollingTimeline = false;
-
-// =====================
-// ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО
-// =====================
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 // =====================
 // СЛАЙД НАВИГАЦИЯ (ГЛАВНОЕ)
@@ -82,13 +71,6 @@ function slideTo(nextFace) {
     setTimeout(() => {
         currentFace = nextFace;
         currentFace.style.pointerEvents = 'auto';
-        
-        // При переходе к результату фокусируемся на timeline
-        if (nextFace === faceLoading && resultContent.style.display === 'block') {
-            setTimeout(() => {
-                timelineElement.focus();
-            }, 100);
-        }
     }, 500);
 }
 
@@ -169,42 +151,6 @@ function renderTimeline(history) {
         `;
         timeline.appendChild(div);
     });
-    
-    // Добавляем обработчик для улучшения скролла на мобильных
-    if (isMobile) {
-        enableTimelineScroll();
-    }
-}
-
-// =====================
-// ВКЛЮЧЕНИЕ СКРОЛЛА ДЛЯ TIMELINE
-// =====================
-function enableTimelineScroll() {
-    if (!timelineElement) return;
-    
-    // Убедимся, что элемент можно скроллить
-    timelineElement.style.overflowY = 'auto';
-    timelineElement.style.webkitOverflowScrolling = 'touch';
-    
-    // Добавляем обработчики для предотвращения всплытия событий
-    timelineElement.addEventListener('touchstart', function(e) {
-        isScrollingTimeline = true;
-    }, { passive: true });
-    
-    timelineElement.addEventListener('touchmove', function(e) {
-        if (isScrollingTimeline) {
-            e.stopPropagation();
-        }
-    }, { passive: true });
-    
-    timelineElement.addEventListener('touchend', function(e) {
-        isScrollingTimeline = false;
-    }, { passive: true });
-    
-    // Также для мыши
-    timelineElement.addEventListener('wheel', function(e) {
-        e.stopPropagation();
-    }, { passive: false });
 }
 
 // =====================
@@ -232,15 +178,13 @@ checkBtn.addEventListener('click', () => {
     if (!ticketsData[ticketNum]) return showError('Обращение не найдено!');
 
     slideTo(faceLoading);
-    loadingContent.style.display = 'flex';
+    loadingContent.style.display = 'block';
     resultContent.style.display = 'none';
 
     setTimeout(() => {
         const ticket = ticketsData[ticketNum];
 
-        // УСТАНАВЛИВАЕМ ЗАГОЛОВОК "Обращение №__"
-        ticketNumberElement.textContent = `Обращение №${ticketNum}`;
-        
+        document.getElementById('ticketNumber').textContent = `Обращение №${ticketNum}`;
         document.getElementById('resultUser').textContent = ticket.user;
         document.getElementById('resultAdmin').textContent = ticket.admin;
         document.getElementById('resultDate').textContent = ticket.created;
@@ -249,16 +193,9 @@ checkBtn.addEventListener('click', () => {
         renderTimeline(ticket.history);
 
         loadingContent.style.display = 'none';
-        resultContent.style.display = 'flex';
+        resultContent.style.display = 'block';
 
         showNotification('Успешно', 'Обращение найдено');
-        
-        // Включаем скролл для timeline
-        if (isMobile) {
-            setTimeout(() => {
-                enableTimelineScroll();
-            }, 100);
-        }
     }, 1200);
 });
 
@@ -296,103 +233,38 @@ nickInput.addEventListener('keypress', e => {
 });
 
 // =====================
-// 3D TILT ЭФФЕКТ (только для десктопов)
+// 3D TILT ЭФФЕКТ (плавнее)
 // =====================
-if (!isMobile && window.innerWidth > 768) {
-    let rotateX = 0;
-    let rotateY = 0;
-    let targetX = 0;
-    let targetY = 0;
-    const speed = 0.1;
+let rotateX = 0;
+let rotateY = 0;
+let targetX = 0;
+let targetY = 0;
+const speed = 0.1; // скорость сглаживания (чем меньше, тем плавнее)
 
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        targetX = ((y - centerY) / centerY) * 8;
-        targetY = ((x - centerX) / centerX) * 8;
-    });
-
-    function animateTilt() {
-        rotateX += (targetX - rotateX) * speed;
-        rotateY += (targetY - rotateY) * speed;
-
-        card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
-
-        requestAnimationFrame(animateTilt);
-    }
-    animateTilt();
-
-    card.addEventListener('mouseleave', () => {
-        targetX = 0;
-        targetY = 0;
-    });
-}
-
-// =====================
-// ИСПРАВЛЕНИЕ ЦЕНТРИРОВАНИЯ НА МОБИЛЬНЫХ
-// =====================
-function fixMobileCentering() {
-    if (window.innerWidth <= 768) {
-        // Принудительное центрирование всех элементов
-        const allElements = [card, document.querySelector('.scene'), document.querySelector('.header')];
-        
-        allElements.forEach(el => {
-            if (el) {
-                el.style.marginLeft = 'auto';
-                el.style.marginRight = 'auto';
-                el.style.left = '0';
-                el.style.right = '0';
-            }
-        });
-        
-        // Центрирование body
-        document.body.style.display = 'flex';
-        document.body.style.flexDirection = 'column';
-        document.body.style.alignItems = 'center';
-        document.body.style.justifyContent = 'flex-start';
-        document.body.style.width = '100%';
-        document.body.style.overflowX = 'hidden';
-        
-        // Исправляем кнопки в главном меню
-        if (startBtn) {
-            startBtn.style.width = 'auto';
-            startBtn.style.maxWidth = '200px';
-            startBtn.style.flex = '0 0 auto';
-        }
-    }
-}
-
-// =====================
-// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
-// =====================
-document.addEventListener('DOMContentLoaded', () => {
-    fixMobileCentering();
-    startBtn.focus();
-    
-    // Назначаем tabindex для timeline чтобы можно было фокусироваться
-    if (timelineElement) {
-        timelineElement.setAttribute('tabindex', '0');
-    }
+card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    targetX = ((y - centerY) / centerY) * 8;
+    targetY = ((x - centerX) / centerX) * 8;
 });
 
-// Пересчет при изменении размера окна
-window.addEventListener('resize', fixMobileCentering);
+// анимация через requestAnimationFrame
+function animateTilt() {
+    // сглаживаем текущее значение к целевому
+    rotateX += (targetX - rotateX) * speed;
+    rotateY += (targetY - rotateY) * speed;
 
-// =====================
-// ПРЕДОТВРАЩЕНИЕ СКРОЛЛА СТРАНИЦЫ ПРИ СКРОЛЛЕ TIMELINE
-// =====================
-document.addEventListener('touchmove', function(e) {
-    if (isScrollingTimeline && timelineElement && timelineElement.contains(e.target)) {
-        e.preventDefault();
-    }
-}, { passive: false });
+    card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
 
-// =====================
-// ДОБАВЛЯЕМ ОБРАБОТЧИК ДЛЯ ОТМЕНЫ ПОИСКА
-// =====================
-cancelBtn.addEventListener('click', () => {
-    slideTo(faceCheck);
+    requestAnimationFrame(animateTilt);
+}
+animateTilt();
+
+card.addEventListener('mouseleave', () => {
+    targetX = 0;
+    targetY = 0;
 });
+

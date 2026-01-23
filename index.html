@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div id="resultContent" style="display: none; width: 100%; max-height: 100%; overflow-y: auto;">
+            <div id="resultContent" style="display: none; width: 100%;">
                 <div class="result-header">
                     <h2 id="ticketNumber">Обращение №</h2>
                 </div>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <p style="text-align: left; margin: 10px 0; color: #aaa; font-size: 13px;">Отслеживание:</p>
-                <div class="timeline" id="timeline"></div>
+                <div class="timeline scrollbar" id="timeline" style="max-height: 200px;"></div>
                 <div class="buttons">
                     <button class="btn" id="resultBackBtn">Назад</button>
                 </div>
@@ -102,12 +102,6 @@
         </div>
     </div>   
 </div>
-
-<div class="result-info">
-  <div class="timeline scrollbar" id="timeline" style="max-height: 200px;"></div>
-</div>
-
-
 
 <div id="notification-container"></div>
 <div id="error-banner">

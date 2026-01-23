@@ -85,9 +85,21 @@ body {
     gap: 14px;
     transition: all 0.5s cubic-bezier(.4,0,.2,1);
     opacity: 0;
-    transform: translateX(100%);
     pointer-events: none;
     min-width: 0;
+}
+
+/* По умолчанию все скрыты справа, кроме главного меню */
+.card-face:not(.card-main) {
+    transform: translateX(100%);
+    filter: blur(6px);
+}
+
+.card-main {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
 }
 
 /* ГЛАВНОЕ МЕНЮ */
@@ -106,6 +118,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
     filter: blur(6px);
+    pointer-events: none;
 }
 
 /* МЕНЮ ВЫБОРА */
@@ -113,6 +126,7 @@ body {
     transform: translateX(-100%);
     opacity: 0;
     filter: blur(6px);
+    pointer-events: none;
 }
 
 .card.active-menu .card-menu {
@@ -129,6 +143,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
     filter: blur(6px);
+    pointer-events: none;
 }
 
 /* ПРОВЕРКА СТАТУСА */
@@ -137,6 +152,7 @@ body {
     transform: translateX(-100%);
     opacity: 0;
     filter: blur(6px);
+    pointer-events: none;
 }
 
 .card.active-check .card-check {
@@ -152,9 +168,8 @@ body {
     transform: translateX(100%);
     opacity: 0;
     filter: blur(6px);
+    pointer-events: none;
 }
-
-
 
 /* ЗАГРУЗКА */
 .card.active-loading .card-loading {
@@ -167,7 +182,8 @@ body {
 .card.active-loading .card-main,
 .card.active-loading .card-menu,
 .card.active-loading .card-check,
-.card.active-loading .card-create {
+.card.active-loading .card-create,
+.card.active-loading .card-result {
     transform: translateX(-100%);
     opacity: 0;
     filter: blur(6px);
@@ -180,6 +196,7 @@ body {
     transform: translateX(-100%);
     opacity: 0;
     filter: blur(6px);
+    pointer-events: none;
 }
 
 .card.active-create .card-create {
@@ -195,6 +212,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
     filter: blur(6px);
+    pointer-events: none;
 }
 
 h1, h2 { 
@@ -420,6 +438,11 @@ input:focus, select:focus {
 
 .menu-btn:hover { 
     background: #e5e5e5; 
+}
+
+.menu-btn.success {
+    background: #00c853;
+    color: #fff;
 }
 
 .menu-btn.success:hover { 

@@ -28,6 +28,8 @@ const resultContent = document.getElementById('resultContent');
 
 // ЭЛЕМЕНТ ДЛЯ ЗАГОЛОВКА
 const ticketNumberElement = document.getElementById('ticketNumber');
+// Элемент timeline для управления скроллом
+const timelineElement = document.getElementById('timeline');
 
 const faces = document.querySelectorAll('.card-face');
 const faceMain = document.querySelector('.card-main');
@@ -41,6 +43,7 @@ let searchTimeout = null;
 let errorTimeout = null;
 let activeNotification = null;
 let notificationHideTimeout = null;
+let isScrollingTimeline = false;
 
 // =====================
 // ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО
@@ -79,6 +82,13 @@ function slideTo(nextFace) {
     setTimeout(() => {
         currentFace = nextFace;
         currentFace.style.pointerEvents = 'auto';
+        
+        // При переходе к результату фокусируемся на timeline
+        if (nextFace === faceLoading && resultContent.style.display === 'block') {
+            setTimeout(() => {
+                timelineElement.focus();
+            }, 100);
+        }
     }, 500);
 }
 
@@ -159,6 +169,42 @@ function renderTimeline(history) {
         `;
         timeline.appendChild(div);
     });
+    
+    // Добавляем обработчик для улучшения скролла на мобильных
+    if (isMobile) {
+        enableTimelineScroll();
+    }
+}
+
+// =====================
+// ВКЛЮЧЕНИЕ СКРОЛЛА ДЛЯ TIMELINE
+// =====================
+function enableTimelineScroll() {
+    if (!timelineElement) return;
+    
+    // Убедимся, что элемент можно скроллить
+    timelineElement.style.overflowY = 'auto';
+    timelineElement.style.webkitOverflowScrolling = 'touch';
+    
+    // Добавляем обработчики для предотвращения всплытия событий
+    timelineElement.addEventListener('touchstart', function(e) {
+        isScrollingTimeline = true;
+    }, { passive: true });
+    
+    timelineElement.addEventListener('touchmove', function(e) {
+        if (isScrollingTimeline) {
+            e.stopPropagation();
+        }
+    }, { passive: true });
+    
+    timelineElement.addEventListener('touchend', function(e) {
+        isScrollingTimeline = false;
+    }, { passive: true });
+    
+    // Также для мыши
+    timelineElement.addEventListener('wheel', function(e) {
+        e.stopPropagation();
+    }, { passive: false });
 }
 
 // =====================
@@ -206,6 +252,13 @@ checkBtn.addEventListener('click', () => {
         resultContent.style.display = 'flex';
 
         showNotification('Успешно', 'Обращение найдено');
+        
+        // Включаем скролл для timeline
+        if (isMobile) {
+            setTimeout(() => {
+                enableTimelineScroll();
+            }, 100);
+        }
     }, 1200);
 });
 
@@ -302,14 +355,44 @@ function fixMobileCentering() {
         document.body.style.justifyContent = 'flex-start';
         document.body.style.width = '100%';
         document.body.style.overflowX = 'hidden';
+        
+        // Исправляем кнопки в главном меню
+        if (startBtn) {
+            startBtn.style.width = 'auto';
+            startBtn.style.maxWidth = '200px';
+            startBtn.style.flex = '0 0 auto';
+        }
     }
 }
 
-// Инициализация при загрузке
+// =====================
+// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+// =====================
 document.addEventListener('DOMContentLoaded', () => {
     fixMobileCentering();
     startBtn.focus();
+    
+    // Назначаем tabindex для timeline чтобы можно было фокусироваться
+    if (timelineElement) {
+        timelineElement.setAttribute('tabindex', '0');
+    }
 });
 
 // Пересчет при изменении размера окна
 window.addEventListener('resize', fixMobileCentering);
+
+// =====================
+// ПРЕДОТВРАЩЕНИЕ СКРОЛЛА СТРАНИЦЫ ПРИ СКРОЛЛЕ TIMELINE
+// =====================
+document.addEventListener('touchmove', function(e) {
+    if (isScrollingTimeline && timelineElement && timelineElement.contains(e.target)) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+// =====================
+// ДОБАВЛЯЕМ ОБРАБОТЧИК ДЛЯ ОТМЕНЫ ПОИСКА
+// =====================
+cancelBtn.addEventListener('click', () => {
+    slideTo(faceCheck);
+});

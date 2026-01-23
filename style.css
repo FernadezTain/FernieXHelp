@@ -75,6 +75,7 @@ body {
   min-width: 0;
   transform: translateX(100%);
   opacity: 0;
+  width: 100%;
 }
 
 /* Главная карта по умолчанию */
@@ -136,7 +137,7 @@ input,
   color: #fff;
   font-size: 14px;
   text-align: center;
-  width: 90%;
+  width: calc(100% - 28px);
   max-width: 400px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -158,16 +159,18 @@ input:focus,
   box-shadow: 0 0 12px rgba(0,200,83,0.4);
 }
 
-/* ========== СКРОЛБАР - НЕВИДИМЫЙ ========== */
+/* ========== СКРОЛБАР - ПОЛНОСТЬЮ НЕВИДИМЫЙ ========== */
 .scrollbar,
-.timeline {
+.timeline,
+#resultContent {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
 .scrollbar::-webkit-scrollbar,
-.timeline::-webkit-scrollbar {
+.timeline::-webkit-scrollbar,
+#resultContent::-webkit-scrollbar {
   display: none;
 }
 
@@ -256,7 +259,7 @@ input:focus,
 /* ========== КРАСИВЫЙ КАСТОМНЫЙ SELECT ========== */
 .custom-select-wrapper {
   position: relative;
-  width: 90%;
+  width: calc(100% - 28px);
   max-width: 400px;
 }
 

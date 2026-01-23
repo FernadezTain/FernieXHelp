@@ -233,22 +233,48 @@ nickInput.addEventListener('keypress', e => {
 });
 
 // =====================
-// 3D TILT ЭФФЕКТ
+// 3D TILT ЭФФЕКТ (ПЛАВНЫЙ)
 // =====================
+let currentRotateX = 0;
+let currentRotateY = 0;
+let targetRotateX = 0;
+let targetRotateY = 0;
+let tiltAnimationId = null;
+
+function updateTilt() {
+    // Плавная интерполяция к целевому значению
+    currentRotateX += (targetRotateX - currentRotateX) * 0.1;
+    currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+    
+    card.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+    
+    // Продолжаем анимацию, если значения еще не достигнуты
+    if (Math.abs(targetRotateX - currentRotateX) > 0.1 || Math.abs(targetRotateY - currentRotateY) > 0.1) {
+        tiltAnimationId = requestAnimationFrame(updateTilt);
+    }
+}
+
 card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * 8;
-    const rotateY = ((x - centerX) / centerX) * 8;
     
-    card.style.transition = 'none';
-    card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+    // Уменьшенные значения для более мягкого эффекта
+    targetRotateX = ((y - centerY) / centerY) * 4;
+    targetRotateY = ((x - centerX) / centerX) * 4;
+    
+    if (!tiltAnimationId) {
+        tiltAnimationId = requestAnimationFrame(updateTilt);
+    }
 });
 
 card.addEventListener('mouseleave', () => {
-    card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.320, 1)';
-    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+    targetRotateX = 0;
+    targetRotateY = 0;
+    
+    if (!tiltAnimationId) {
+        tiltAnimationId = requestAnimationFrame(updateTilt);
+    }
 });

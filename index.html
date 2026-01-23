@@ -36,7 +36,7 @@
       <div class="card-face card-check">
         <h2>Проверка статуса обращения</h2>
         <p>Введите номер обращения</p>
-        <input type="text" id="ticketInput" placeholder="№ обращения">
+        <input type="text" id="ticketInput" placeholder="№ обращения" class="input-field">
         <div class="buttons">
           <button class="btn" id="checkBackBtn">Назад</button>
           <button class="btn success" id="checkBtn">Проверить</button>
@@ -92,10 +92,10 @@
       <!-- СОЗДАНИЕ ОБРАЩЕНИЯ -->
       <div class="card-face card-create">
         <h2>Создание обращения</h2>
-        <input type="text" id="nickInput" placeholder="Введите ваш Nick" style="width: 85%;">
+        <input type="text" id="nickInput" placeholder="Введите ваш Nick" class="input-field">
         
         <!-- Красивый кастомный select -->
-        <div class="custom-select-wrapper" style="width: 85%;">
+        <div class="custom-select-wrapper">
           <div class="custom-select" id="typeSelectCustom">
             <div class="select-header">
               <span class="select-value">Выберите тип обращения</span>
@@ -112,14 +112,6 @@
               <div class="select-option" data-value="other">📋 Другое</div>
             </div>
           </div>
-          <select id="typeSelect" style="display: none;">
-            <option value="">Выберите тип обращения</option>
-            <option value="bug">Баг / Ошибка</option>
-            <option value="suggest">Предложение</option>
-            <option value="question">Вопрос</option>
-            <option value="complaint">Жалоба</option>
-            <option value="other">Другое</option>
-          </select>
         </div>
 
         <div class="buttons">

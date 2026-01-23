@@ -233,26 +233,13 @@ nickInput.addEventListener('keypress', e => {
 });
 
 // =====================
-// 3D TILT ЭФФЕКТ (ПЛАВНЫЙ)
+// 3D TILT ЭФФЕКТ (плавнее)
 // =====================
-let currentRotateX = 0;
-let currentRotateY = 0;
-let targetRotateX = 0;
-let targetRotateY = 0;
-let tiltAnimationId = null;
-
-function updateTilt() {
-    // Плавная интерполяция к целевому значению
-    currentRotateX += (targetRotateX - currentRotateX) * 0.1;
-    currentRotateY += (targetRotateY - currentRotateY) * 0.1;
-    
-    card.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
-    
-    // Продолжаем анимацию, если значения еще не достигнуты
-    if (Math.abs(targetRotateX - currentRotateX) > 0.1 || Math.abs(targetRotateY - currentRotateY) > 0.1) {
-        tiltAnimationId = requestAnimationFrame(updateTilt);
-    }
-}
+let rotateX = 0;
+let rotateY = 0;
+let targetX = 0;
+let targetY = 0;
+const speed = 0.1; // скорость сглаживания (чем меньше, тем плавнее)
 
 card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
@@ -260,21 +247,23 @@ card.addEventListener('mousemove', (e) => {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
-    // Уменьшенные значения для более мягкого эффекта
-    targetRotateX = ((y - centerY) / centerY) * 4;
-    targetRotateY = ((x - centerX) / centerX) * 4;
-    
-    if (!tiltAnimationId) {
-        tiltAnimationId = requestAnimationFrame(updateTilt);
-    }
+    targetX = ((y - centerY) / centerY) * 8;
+    targetY = ((x - centerX) / centerX) * 8;
 });
 
+// анимация через requestAnimationFrame
+function animateTilt() {
+    // сглаживаем текущее значение к целевому
+    rotateX += (targetX - rotateX) * speed;
+    rotateY += (targetY - rotateY) * speed;
+
+    card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+
+    requestAnimationFrame(animateTilt);
+}
+animateTilt();
+
 card.addEventListener('mouseleave', () => {
-    targetRotateX = 0;
-    targetRotateY = 0;
-    
-    if (!tiltAnimationId) {
-        tiltAnimationId = requestAnimationFrame(updateTilt);
-    }
+    targetX = 0;
+    targetY = 0;
 });

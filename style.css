@@ -174,21 +174,67 @@ input:focus,
   display: none;
 }
 
+#resultContent {
+  padding: 0 8px !important;
+  width: calc(100% - 16px) !important;
+}
+
 /* ---------- Result info ---------- */
-.result-header { text-align: center; width: 100%; margin-bottom: 12px; }
-.result-header h2 { margin-bottom: 4px; font-size: 16px; }
-.result-info { text-align: left; width: 100%; margin-bottom: 12px; }
-.info-row { display: flex; justify-content: space-between; margin-bottom: 5px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-.info-label { color: #aaa; font-size: 11px; }
-.info-value { color: #fff; font-weight: 600; font-size: 11px; }
+.result-header { text-align: center; width: 100%; margin-bottom: 12px; padding: 0 8px; }
+.result-header h2 { margin-bottom: 4px; font-size: 16px; word-break: break-all; }
+.result-info { 
+  text-align: center; 
+  width: 100%; 
+  margin-bottom: 12px;
+  padding: 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.info-row { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 5px; 
+  padding: 8px 0; 
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.info-label { 
+  color: #aaa; 
+  font-size: 11px;
+  min-width: 80px;
+}
+.info-value { 
+  color: #fff; 
+  font-weight: 600; 
+  font-size: 11px;
+  text-align: right;
+  flex: 1;
+  word-break: break-all;
+}
+
+/* ---------- Tracking text ---------- */
+.result-info + p {
+  padding: 0 8px !important;
+  width: calc(100% - 16px);
+}
 
 /* ---------- Timeline items ---------- */
+.timeline {
+  width: calc(100% - 16px);
+  margin: 0 8px;
+  padding-right: 4px;
+}
+
 .timeline-item {
   display: flex;
   gap: 8px;
   margin-bottom: 10px;
   position: relative;
   padding-left: 12px;
+  word-break: break-word;
 }
 
 .timeline-dot {

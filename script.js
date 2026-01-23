@@ -208,7 +208,7 @@ startBtn.addEventListener('click', () => {
 });
 
 backToMainBtn.addEventListener('click', () => {
-    card.classList.remove('active-menu', 'active-check', 'active-result', 'active-create');
+    card.classList.remove('active-menu', 'active-check', 'active-loading', 'active-create');
     card.classList.add('active-main');
 });
 

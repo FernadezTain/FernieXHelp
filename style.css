@@ -84,17 +84,11 @@ body {
     align-items: center;
     gap: 14px;
     transition: all 0.5s cubic-bezier(.4,0,.2,1);
-    opacity: 0;
     pointer-events: none;
     min-width: 0;
 }
 
-/* По умолчанию все скрыты справа, кроме главного меню */
-.card-face:not(.card-main) {
-    transform: translateX(100%);
-    filter: blur(6px);
-}
-
+/* ГЛАВНОЕ МЕНЮ - изначально активно */
 .card-main {
     transform: translateX(0);
     opacity: 1;
@@ -102,7 +96,17 @@ body {
     pointer-events: auto;
 }
 
-/* ГЛАВНОЕ МЕНЮ */
+/* Остальные экраны изначально справа */
+.card-menu,
+.card-check,
+.card-create,
+.card-loading {
+    transform: translateX(100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
+/* ГЛАВНОЕ МЕНЮ АКТИВНО */
 .card.active-main .card-main {
     transform: translateX(0);
     opacity: 1;
@@ -121,7 +125,7 @@ body {
     pointer-events: none;
 }
 
-/* МЕНЮ ВЫБОРА */
+/* МЕНЮ ВЫБОРА АКТИВНО */
 .card.active-menu .card-main {
     transform: translateX(-100%);
     opacity: 0;
@@ -146,7 +150,7 @@ body {
     pointer-events: none;
 }
 
-/* ПРОВЕРКА СТАТУСА */
+/* ПРОВЕРКА СТАТУСА АКТИВНА */
 .card.active-check .card-main,
 .card.active-check .card-menu {
     transform: translateX(-100%);
@@ -171,14 +175,7 @@ body {
     pointer-events: none;
 }
 
-/* ЗАГРУЗКА */
-.card.active-loading .card-loading {
-    transform: translateX(0);
-    opacity: 1;
-    filter: blur(0);
-    pointer-events: auto;
-}
-
+/* ЗАГРУЗКА АКТИВНА */
 .card.active-loading .card-main,
 .card.active-loading .card-menu,
 .card.active-loading .card-check,
@@ -190,7 +187,14 @@ body {
     pointer-events: none;
 }
 
-/* СОЗДАНИЕ */
+.card.active-loading .card-loading {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+}
+
+/* СОЗДАНИЕ АКТИВНО */
 .card.active-create .card-main,
 .card.active-create .card-menu {
     transform: translateX(-100%);

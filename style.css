@@ -413,10 +413,10 @@ select option {
 
 /* Firefox scrollbar */
 .timeline {
-    scrollbar-width: thin;
-    scrollbar-color: #00c853 rgba(255, 255, 255, 0.05);
+    overflow-y: auto;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #00c853 rgba(255,255,255,0.05);
 }
-
 
 .timeline-item {
     display: flex;

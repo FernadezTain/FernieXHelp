@@ -217,26 +217,21 @@ select option {
   overflow-y: auto;
 }
 
-/* ---------- Scrollbar для timeline и любых скроллбаров ---------- */
-.scrollbar,
 .timeline {
   overflow-y: auto;
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: #00c853 rgba(0,0,0,0.1);
 }
 
-.scrollbar::-webkit-scrollbar,
 .timeline::-webkit-scrollbar {
   width: 8px;
 }
 
-.scrollbar::-webkit-scrollbar-track,
 .timeline::-webkit-scrollbar-track {
   background: rgba(0,0,0,0.2);
   border-radius: 8px;
 }
 
-.scrollbar::-webkit-scrollbar-thumb,
 .timeline::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #00ff73, #00c853);
   border-radius: 8px;
@@ -244,23 +239,14 @@ select option {
   background-clip: padding-box;
 }
 
-.scrollbar::-webkit-scrollbar-thumb:hover,
 .timeline::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #00ff93, #00e563);
 }
 
-.scrollbar::-webkit-scrollbar-thumb:active,
 .timeline::-webkit-scrollbar-thumb:active {
   background: linear-gradient(180deg, #00a340, #008a35);
 }
 
-/* ---------- Timeline items ---------- */
-.timeline-item { display: flex; gap: 10px; margin-bottom: 12px; position: relative; padding-left: 15px; }
-.timeline-dot { width: 10px; height: 10px; background: #00c853; border-radius: 50%; margin-top: 4px; flex-shrink: 0; position: absolute; left: 0; box-shadow: 0 0 8px rgba(0,200,83,0.6); }
-.timeline-content { flex: 1; }
-.timeline-status { color: #fff; font-weight: 600; font-size: 12px; margin-bottom: 2px; }
-.timeline-date { color: #888; font-size: 11px; }
-.timeline-line { position: absolute; left: 4px; top: 17px; width: 2px; height: 20px; background: linear-gradient(180deg, rgba(0,200,83,0.3), rgba(0,200,83,0.1)); }
 
 /* ---------- Menu buttons ---------- */
 .menu-buttons { display: flex; flex-direction: column; gap: 12px; }

@@ -36,7 +36,7 @@
       <div class="card-face card-check">
         <h2>Проверка статуса обращения</h2>
         <p>Введите номер обращения</p>
-        <input type="text" id="ticketInput" placeholder="№ обращения" class="input-field">
+        <input type="text" id="ticketInput" placeholder="№ обращения">
         <div class="buttons">
           <button class="btn" id="checkBackBtn">Назад</button>
           <button class="btn success" id="checkBtn">Проверить</button>
@@ -46,7 +46,7 @@
       <!-- РЕЗУЛЬТАТ ПОИСКА И ЗАГРУЗКА -->
       <div class="card-face card-loading">
 
-        <div id="loadingContent">
+        <div id="loadingContent" class="loading-container">
           <h2>Поиск обращения...</h2>
           <div class="loading-spinner"></div>
           <div class="loading-text" id="loadingText"></div>
@@ -55,32 +55,34 @@
           </div>
         </div>
 
-        <div id="resultContent">
+        <div id="resultContent" style="display: none; width: 100%; max-height: 100%; overflow-y: auto;">
           <div class="result-header">
             <h2 id="ticketNumber">Обращение №</h2>
           </div>
 
-          <div class="result-info">
-            <div class="info-row">
-              <span class="info-label">Пользователь:</span>
-              <span class="info-value" id="resultUser">-</span>
+          <div class="result-info-wrapper">
+            <div class="result-info">
+              <div class="info-row">
+                <span class="info-label">Пользователь:</span>
+                <span class="info-value" id="resultUser">-</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Администратор:</span>
+                <span class="info-value" id="resultAdmin">-</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Создано:</span>
+                <span class="info-value" id="resultDate">-</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Статус:</span>
+                <span class="info-value" id="resultStatus">-</span>
+              </div>
             </div>
-            <div class="info-row">
-              <span class="info-label">Администратор:</span>
-              <span class="info-value" id="resultAdmin">-</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Создано:</span>
-              <span class="info-value" id="resultDate">-</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Статус:</span>
-              <span class="info-value" id="resultStatus">-</span>
-            </div>
-          </div>
 
-          <p style="text-align: left; margin: 10px 0; color: #aaa; font-size: 13px;">Отслеживание:</p>
-          <div class="timeline scrollbar" id="timeline"></div>
+            <p style="text-align: left; margin: 10px 0; color: #aaa; font-size: 13px;">Отслеживание:</p>
+            <div class="timeline" id="timeline"></div>
+          </div>
 
           <div class="buttons">
             <button class="btn" id="resultBackBtn">Назад</button>
@@ -92,28 +94,17 @@
       <!-- СОЗДАНИЕ ОБРАЩЕНИЯ -->
       <div class="card-face card-create">
         <h2>Создание обращения</h2>
-        <input type="text" id="nickInput" placeholder="Введите ваш Nick" class="input-field">
-        
-        <!-- Красивый кастомный select -->
-        <div class="custom-select-wrapper">
-          <div class="custom-select" id="typeSelectCustom">
-            <div class="select-header">
-              <span class="select-value">Выберите тип обращения</span>
-              <svg class="select-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
-                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="select-dropdown">
-              <div class="select-option" data-value="">Выберите тип обращения</div>
-              <div class="select-option" data-value="bug">🐛 Баг / Ошибка</div>
-              <div class="select-option" data-value="suggest">💡 Предложение</div>
-              <div class="select-option" data-value="question">❓ Вопрос</div>
-              <div class="select-option" data-value="complaint">⚠️ Жалоба</div>
-              <div class="select-option" data-value="other">📋 Другое</div>
-            </div>
-          </div>
+        <input type="text" id="nickInput" placeholder="Введите ваш Nick" style="width: 85%;">
+        <div class="select-wrapper">
+          <select id="typeSelect">
+            <option value="">Выберите тип обращения</option>
+            <option value="bug">Баг / Ошибка</option>
+            <option value="suggest">Предложение</option>
+            <option value="question">Вопрос</option>
+            <option value="complaint">Жалоба</option>
+            <option value="other">Другое</option>
+          </select>
         </div>
-
         <div class="buttons">
           <button class="btn" id="createBackBtn">Назад</button>
           <button class="btn success" id="createSubmitBtn">Создать</button>

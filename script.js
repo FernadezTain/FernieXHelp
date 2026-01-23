@@ -45,10 +45,12 @@ let notificationHideTimeout = null;
 function slideTo(nextFace) {
     if (!nextFace || nextFace === currentFace) return;
 
-    // подготовка всех
     faces.forEach(f => {
-        f.style.transition = 'transform 0.5s cubic-bezier(.4,0,.2,1), opacity 0.4s';
+        f.style.transition = 'transform 0.5s cubic-bezier(.4,0,.2,1), opacity 0.4s, filter 0.5s';
         f.style.pointerEvents = 'none';
+
+        // все неактивные размазываем
+        if (f !== nextFace) f.style.filter = 'blur(6px)';
     });
 
     // текущий уезжает влево
@@ -58,10 +60,12 @@ function slideTo(nextFace) {
     // новый стартует справа
     nextFace.style.transform = 'translateX(100%)';
     nextFace.style.opacity = '0';
+    nextFace.style.filter = 'blur(6px)';
 
     requestAnimationFrame(() => {
         nextFace.style.transform = 'translateX(0)';
         nextFace.style.opacity = '1';
+        nextFace.style.filter = 'blur(0)'; // чёткий активный экран
     });
 
     setTimeout(() => {

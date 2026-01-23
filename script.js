@@ -1,7 +1,8 @@
 // =====================
-// ЭЛЕМЕНТЫ И ПЕРЕМЕННЫЕ
+// ЭЛЕМЕНТЫ
 // =====================
 const card = document.getElementById('card');
+
 const startBtn = document.getElementById('startBtn');
 const backToMainBtn = document.getElementById('backToMainBtn');
 const checkStatusBtn = document.getElementById('checkStatusBtn');
@@ -12,133 +13,85 @@ const cancelBtn = document.getElementById('cancelBtn');
 const resultBackBtn = document.getElementById('resultBackBtn');
 const createBackBtn = document.getElementById('createBackBtn');
 const createSubmitBtn = document.getElementById('createSubmitBtn');
+
 const ticketInput = document.getElementById('ticketInput');
 const nickInput = document.getElementById('nickInput');
 const typeSelect = document.getElementById('typeSelect');
+
 const errorBanner = document.getElementById('error-banner');
 const errorMessage = document.getElementById('error-message');
 const errorCloseBtn = document.querySelector('#error-banner .close-btn');
+
 const notificationContainer = document.getElementById('notification-container');
 const loadingContent = document.getElementById('loadingContent');
 const resultContent = document.getElementById('resultContent');
 
+const faces = document.querySelectorAll('.card-face');
+const faceMain = document.querySelector('.card-main');
+const faceMenu = document.querySelector('.card-menu');
+const faceCheck = document.querySelector('.card-check');
+const faceCreate = document.querySelector('.card-create');
+const faceLoading = document.querySelector('.card-loading');
+
+let currentFace = faceMain;
+let searchTimeout = null;
 let errorTimeout = null;
 let activeNotification = null;
 let notificationHideTimeout = null;
-let searchTimeout = null;
-
-// Имитация базы данных обращений
-const ticketsData = {
-    "001": {
-        user: "FernieX",
-        admin: "Support Team",
-        created: "23.01.2025 14:30",
-        status: "Решено",
-        type: "bug",
-        description: "Ошибка при входе на сайт",
-        history: [
-            { status: "Решено", date: "23.01.2025 18:45" },
-            { status: "В разработке", date: "23.01.2025 16:20" },
-            { status: "Принято к рассмотрению", date: "23.01.2025 15:10" },
-            { status: "Обращение создано", date: "23.01.2025 14:30" }
-        ]
-    },
-    "002": {
-        user: "UserName",
-        admin: "Support Admin",
-        created: "22.01.2025 10:15",
-        status: "На рассмотрении",
-        type: "suggest",
-        description: "Предложение по улучшению дизайна",
-        history: [
-            { status: "На рассмотрении", date: "23.01.2025 09:00" },
-            { status: "Принято к рассмотрению", date: "22.01.2025 11:30" },
-            { status: "Обращение создано", date: "22.01.2025 10:15" }
-        ]
-    },
-    "003": {
-        user: "TestUser",
-        admin: "Manager",
-        created: "21.01.2025 08:45",
-        status: "Ответ отправлен",
-        type: "question",
-        description: "Как сбросить пароль?",
-        history: [
-            { status: "Ответ отправлен", date: "23.01.2025 12:00" },
-            { status: "В разработке", date: "22.01.2025 14:00" },
-            { status: "Принято к рассмотрению", date: "21.01.2025 10:00" },
-            { status: "Обращение создано", date: "21.01.2025 08:45" }
-        ]
-    },
-    "004": {
-        user: "AdminUser",
-        admin: "Senior Support",
-        created: "20.01.2025 16:00",
-        status: "Решено",
-        type: "complaint",
-        description: "Жалоба на работу сервиса",
-        history: [
-            { status: "Решено", date: "23.01.2025 14:30" },
-            { status: "Ответ отправлен", date: "22.01.2025 10:00" },
-            { status: "В разработке", date: "21.01.2025 15:00" },
-            { status: "Принято к рассмотрению", date: "20.01.2025 17:00" },
-            { status: "Обращение создано", date: "20.01.2025 16:00" }
-        ]
-    },
-    "005": {
-        user: "ProUser",
-        admin: "Support Team",
-        created: "19.01.2025 12:30",
-        status: "На рассмотрении",
-        type: "other",
-        description: "Консультация по тарифам",
-        history: [
-            { status: "На рассмотрении", date: "23.01.2025 11:00" },
-            { status: "Принято к рассмотрению", date: "19.01.2025 13:45" },
-            { status: "Обращение создано", date: "19.01.2025 12:30" }
-        ]
-    }
-};
 
 // =====================
-// ФУНКЦИИ
+// СЛАЙД НАВИГАЦИЯ (ГЛАВНОЕ)
 // =====================
+function slideTo(nextFace) {
+    if (!nextFace || nextFace === currentFace) return;
 
-/**
- * Показать ошибку в баннере
- */
+    // подготовка всех
+    faces.forEach(f => {
+        f.style.transition = 'transform 0.5s cubic-bezier(.4,0,.2,1), opacity 0.4s';
+        f.style.pointerEvents = 'none';
+    });
+
+    // текущий уезжает влево
+    currentFace.style.transform = 'translateX(-100%)';
+    currentFace.style.opacity = '0';
+
+    // новый стартует справа
+    nextFace.style.transform = 'translateX(100%)';
+    nextFace.style.opacity = '0';
+
+    requestAnimationFrame(() => {
+        nextFace.style.transform = 'translateX(0)';
+        nextFace.style.opacity = '1';
+    });
+
+    setTimeout(() => {
+        currentFace = nextFace;
+        currentFace.style.pointerEvents = 'auto';
+    }, 500);
+}
+
+// =====================
+// ОШИБКИ
+// =====================
 function showError(message) {
-    if (errorBanner.classList.contains('show')) {
-        errorBanner.classList.remove('show');
-        clearTimeout(errorTimeout);
-        setTimeout(() => {
-            errorMessage.innerText = message;
-            errorBanner.classList.add('show');
-            errorTimeout = setTimeout(hideError, 3000);
-        }, 50);
-    } else {
-        errorMessage.innerText = message;
-        errorBanner.classList.add('show');
-        errorTimeout = setTimeout(hideError, 3000);
-    }
-}
-
-/**
- * Скрыть ошибку
- */
-function hideError() {
-    errorBanner.classList.remove('show');
+    errorMessage.innerText = message;
+    errorBanner.classList.add('show');
     clearTimeout(errorTimeout);
+    errorTimeout = setTimeout(() => {
+        errorBanner.classList.remove('show');
+    }, 3000);
 }
 
-/**
- * Показать уведомление
- */
+errorCloseBtn.addEventListener('click', () => {
+    errorBanner.classList.remove('show');
+});
+
+// =====================
+// УВЕДОМЛЕНИЯ
+// =====================
 function showNotification(title, message) {
     if (activeNotification) {
-        clearTimeout(notificationHideTimeout);
-        activeNotification.classList.remove('show');
-        setTimeout(() => activeNotification.remove(), 200);
+        activeNotification.remove();
     }
 
     const notif = document.createElement('div');
@@ -151,199 +104,126 @@ function showNotification(title, message) {
 
     notificationHideTimeout = setTimeout(() => {
         notif.classList.remove('show');
-        setTimeout(() => {
-            notif.remove();
-            activeNotification = null;
-        }, 400);
+        setTimeout(() => notif.remove(), 400);
     }, 2500);
 }
 
-/**
- * Получить случайное время загрузки
- */
-function getRandomLoadingTime() {
-    return Math.random() > 0.7 ? 100 : 2000;
-}
+// =====================
+// ЗАГРУЗКА ТИКЕТОВ ИЗ JSON
+// =====================
+let ticketsData = {};
 
-/**
- * Отрендерить временную шкалу
- */
+// Загружаем tickets.json при старте
+fetch('tickets.json')
+    .then(response => {
+        if (!response.ok) throw new Error('Не удалось загрузить tickets.json');
+        return response.json();
+    })
+    .then(data => {
+        ticketsData = data;
+        console.log('База тикетов загружена', ticketsData);
+    })
+    .catch(err => {
+        showError('Ошибка загрузки базы тикетов');
+        console.error(err);
+    });
+
+// =====================
+// ТАЙМЛАЙН
+// =====================
 function renderTimeline(history) {
     const timeline = document.getElementById('timeline');
     timeline.innerHTML = '';
 
-    history.forEach((item, index) => {
-        const timelineItem = document.createElement('div');
-        timelineItem.className = 'timeline-item';
-        
-        if (index < history.length - 1) {
-            const line = document.createElement('div');
-            line.className = 'timeline-line';
-            timelineItem.appendChild(line);
-        }
-
-        const dot = document.createElement('div');
-        dot.className = 'timeline-dot';
-        timelineItem.appendChild(dot);
-
-        const content = document.createElement('div');
-        content.className = 'timeline-content';
-        content.innerHTML = `
-            <div class="timeline-status">• ${item.status}</div>
-            <div class="timeline-date">${item.date}</div>
+    history.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'timeline-item';
+        div.innerHTML = `
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <div class="timeline-status">${item.status}</div>
+                <div class="timeline-date">${item.date}</div>
+            </div>
         `;
-        timelineItem.appendChild(content);
-
-        timeline.appendChild(timelineItem);
+        timeline.appendChild(div);
     });
 }
 
 // =====================
-// СОБЫТИЯ - НАВИГАЦИЯ
+// НАВИГАЦИЯ
 // =====================
-
-startBtn.addEventListener('click', () => {
-    card.className = 'card active-menu';
-});
-
-backToMainBtn.addEventListener('click', () => {
-    card.className = 'card active-main';
-});
-
+startBtn.addEventListener('click', () => slideTo(faceMenu));
+backToMainBtn.addEventListener('click', () => slideTo(faceMain));
 checkStatusBtn.addEventListener('click', () => {
-    card.className = 'card active-check';
+    slideTo(faceCheck);
     ticketInput.value = '';
-    setTimeout(() => ticketInput.focus(), 100);
+    setTimeout(() => ticketInput.focus(), 300);
 });
+createBtn.addEventListener('click', () => slideTo(faceCreate));
+checkBackBtn.addEventListener('click', () => slideTo(faceMenu));
+createBackBtn.addEventListener('click', () => slideTo(faceMenu));
+resultBackBtn.addEventListener('click', () => slideTo(faceCheck));
 
-createBtn.addEventListener('click', () => {
-    card.className = 'card active-create';
-    nickInput.value = '';
-    typeSelect.value = '';
-    setTimeout(() => nickInput.focus(), 100);
-});
-
-checkBackBtn.addEventListener('click', () => {
-    card.className = 'card active-menu';
-});
-
-createBackBtn.addEventListener('click', () => {
-    card.className = 'card active-menu';
-});
-
-resultBackBtn.addEventListener('click', () => {
-    card.className = 'card active-check';
-    ticketInput.value = '';
-    loadingContent.style.display = 'block';
-    resultContent.style.display = 'none';
-    ticketInput.focus();
-});
-
-errorCloseBtn.addEventListener('click', hideError);
 
 // =====================
-// СОБЫТИЯ - ПРОВЕРКА ОБРАЩЕНИЯ
+// ПРОВЕРКА ОБРАЩЕНИЯ
 // =====================
-
 checkBtn.addEventListener('click', () => {
     const ticketNum = ticketInput.value.trim();
+    if (!ticketNum) return showError('Введите номер обращения!');
+    if (!ticketsData[ticketNum]) return showError('Обращение не найдено!');
 
-    if (!ticketNum) {
-        showError('Введите номер обращения!');
-        return;
-    }
+    slideTo(faceLoading);
+    loadingContent.style.display = 'block';
+    resultContent.style.display = 'none';
 
-    if (!ticketsData[ticketNum]) {
-        showError('Обращение не найдено!');
-        return;
-    }
-
-    card.className = 'card active-loading';
-
-    const loadingTime = getRandomLoadingTime();
-    const loadingText = document.getElementById('loadingText');
-    loadingText.textContent = loadingTime === 100 ? '(0.10 сек)' : '(2 сек)';
-
-    searchTimeout = setTimeout(() => {
+    setTimeout(() => {
         const ticket = ticketsData[ticketNum];
-        
+
         document.getElementById('ticketNumber').textContent = `Обращение №${ticketNum}`;
         document.getElementById('resultUser').textContent = ticket.user;
         document.getElementById('resultAdmin').textContent = ticket.admin;
         document.getElementById('resultDate').textContent = ticket.created;
         document.getElementById('resultStatus').textContent = ticket.status;
-        
+
         renderTimeline(ticket.history);
 
         loadingContent.style.display = 'none';
         resultContent.style.display = 'block';
 
-        showNotification('Успешно!', `Обращение №${ticketNum} найдено`);
-    }, loadingTime);
+        showNotification('Успешно', 'Обращение найдено');
+    }, 1200);
 });
 
-cancelBtn.addEventListener('click', () => {
-    clearTimeout(searchTimeout);
-    card.className = 'card active-check';
-    loadingContent.style.display = 'block';
-    resultContent.style.display = 'none';
-});
 
 // =====================
-// СОБЫТИЯ - СОЗДАНИЕ ОБРАЩЕНИЯ
+// СОЗДАНИЕ ОБРАЩЕНИЯ
 // =====================
-
 createSubmitBtn.addEventListener('click', () => {
     const nick = nickInput.value.trim();
     const type = typeSelect.value;
 
-    if (!nick) {
-        showError('Введите ваш Nick!');
-        return;
-    }
+    if (!nick) return showError('Введите Nick!');
+    if (!type) return showError('Выберите тип!');
 
-    if (!type) {
-        showError('Выберите тип обращения!');
-        return;
-    }
-
-    card.className = 'card active-loading';
-    loadingContent.innerHTML = `
-        <h2>Создание обращения...</h2>
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Перенаправление в Telegram...</div>
-    `;
+    slideTo(faceLoading);
 
     setTimeout(() => {
         const botUrl = `https://t.me/FernieXBot?start=name=${encodeURIComponent(nick)};type=${type}`;
         window.open(botUrl, '_blank');
-        
-        showNotification('Переход в Telegram', 'Бот FernieX будет загружен');
-        
-        setTimeout(() => {
-            card.className = 'card active-menu';
-            loadingContent.innerHTML = `
-                <h2>Поиск обращения...</h2>
-                <div class="loading-spinner"></div>
-                <div class="loading-text" id="loadingText"></div>
-                <div class="buttons" style="margin-top: 20px;">
-                    <button class="btn danger" id="cancelBtn">Отменить поиск</button>
-                </div>
-            `;
-            nickInput.value = '';
-            typeSelect.value = '';
-        }, 1500);
+        showNotification('Telegram', 'Бот открыт');
+
+        slideTo(faceMenu);
     }, 1000);
 });
 
 // =====================
-// ОБРАБОТКА ENTER
+// ENTER
 // =====================
-
-ticketInput.addEventListener('keypress', (e) => {
+ticketInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') checkBtn.click();
 });
 
-nickInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && typeSelect.value) createSubmitBtn.click();
+nickInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') createSubmitBtn.click();
 });

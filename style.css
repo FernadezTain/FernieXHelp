@@ -618,3 +618,34 @@ select option {
     transform: translateX(0);
     opacity: 1;
 }
+.scrollbar {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #00c853 rgba(255,255,255,0.05);
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00ff73, #00c853);
+    border-radius: 12px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 0 0 10px rgba(0, 200, 83, 0.6);
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #00ff93, #00e563);
+    box-shadow: inset 0 0 12px rgba(0,200,83,0.8);
+}
+
+.scrollbar::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg, #00a340, #008a35);
+}

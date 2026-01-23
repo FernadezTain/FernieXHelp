@@ -40,6 +40,11 @@ let activeNotification = null;
 let notificationHideTimeout = null;
 
 // =====================
+// ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО
+// =====================
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// =====================
 // СЛАЙД НАВИГАЦИЯ (ГЛАВНОЕ)
 // =====================
 function slideTo(nextFace) {
@@ -233,37 +238,60 @@ nickInput.addEventListener('keypress', e => {
 });
 
 // =====================
-// 3D TILT ЭФФЕКТ (плавнее)
+// 3D TILT ЭФФЕКТ (только для десктопов)
 // =====================
-let rotateX = 0;
-let rotateY = 0;
-let targetX = 0;
-let targetY = 0;
-const speed = 0.1; // скорость сглаживания (чем меньше, тем плавнее)
+if (!isMobile && window.innerWidth > 768) {
+    let rotateX = 0;
+    let rotateY = 0;
+    let targetX = 0;
+    let targetY = 0;
+    const speed = 0.1;
 
-card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    targetX = ((y - centerY) / centerY) * 8;
-    targetY = ((x - centerX) / centerX) * 8;
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        targetX = ((y - centerY) / centerY) * 8;
+        targetY = ((x - centerX) / centerX) * 8;
+    });
+
+    function animateTilt() {
+        rotateX += (targetX - rotateX) * speed;
+        rotateY += (targetY - rotateY) * speed;
+
+        card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+
+        requestAnimationFrame(animateTilt);
+    }
+    animateTilt();
+
+    card.addEventListener('mouseleave', () => {
+        targetX = 0;
+        targetY = 0;
+    });
+}
+
+// =====================
+// ПЕРЕОРИЕНТАЦИЯ ЭКРАНА
+// =====================
+window.addEventListener('resize', () => {
+    if (window.innerWidth <= 480) {
+        document.body.style.paddingTop = '60px';
+    } else {
+        document.body.style.paddingTop = '20px';
+    }
 });
 
-// анимация через requestAnimationFrame
-function animateTilt() {
-    // сглаживаем текущее значение к целевому
-    rotateX += (targetX - rotateX) * speed;
-    rotateY += (targetY - rotateY) * speed;
-
-    card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
-
-    requestAnimationFrame(animateTilt);
-}
-animateTilt();
-
-card.addEventListener('mouseleave', () => {
-    targetX = 0;
-    targetY = 0;
+// =====================
+// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+// =====================
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.innerWidth <= 480) {
+        document.body.style.paddingTop = '60px';
+    }
+    
+    // Фокус на главной кнопке для лучшей доступности
+    startBtn.focus();
 });

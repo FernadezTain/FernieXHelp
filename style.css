@@ -48,12 +48,6 @@ body {
   transition: transform 0.15s ease, width 0.5s ease, height 0.5s ease;
 }
 
-.card.active-menu { width: 520px; height: 380px; }
-.card.active-check { width: 520px; height: 380px; }
-.card.active-result { width: 620px; height: 600px; }
-.card.active-create { width: 520px; height: 420px; }
-.card.active-loading { width: 620px; height: 600px; }
-
 .card-face {
   position: absolute;
   inset: 0;
@@ -77,46 +71,9 @@ body {
   pointer-events: auto;
 }
 
-/* Анимация навигации между картами */
-.card.active-main .card-main { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
-.card.active-main .card-menu,
-.card.active-main .card-check,
-.card.active-main .card-result,
-.card.active-main .card-create,
-.card.active-main .card-loading { transform: translateX(100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-
-.card.active-menu .card-main { transform: translateX(-100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-.card.active-menu .card-menu { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
-.card.active-menu .card-check,
-.card.active-menu .card-result,
-.card.active-menu .card-create,
-.card.active-menu .card-loading { transform: translateX(100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-
-.card.active-check .card-main,
-.card.active-check .card-menu { transform: translateX(-100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-.card.active-check .card-check { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
-.card.active-check .card-result,
-.card.active-check .card-create,
-.card.active-check .card-loading { transform: translateX(100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-
-.card.active-loading .card-main,
-.card.active-loading .card-menu,
-.card.active-loading .card-check,
-.card.active-loading .card-create,
-.card.active-loading .card-result { transform: translateX(-100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-.card.active-loading .card-loading { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
-
-.card.active-create .card-main,
-.card.active-create .card-menu { transform: translateX(-100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-.card.active-create .card-create { transform: translateX(0); opacity: 1; filter: blur(0); pointer-events: auto; }
-.card.active-create .card-check,
-.card.active-create .card-result,
-.card.active-create .card-loading { transform: translateX(100%); opacity: 0; filter: blur(6px); pointer-events: none; }
-
 h1, h2 { color: #fff; text-align: center; word-break: break-word; }
 p { color: #aaa; font-size: 15px; }
 
-/* ---------- Input и Select ---------- */
 input, select {
   padding: 12px 16px;
   border-radius: 14px;
@@ -133,54 +90,30 @@ input, select {
 
 input::placeholder { color: #888; }
 
-/* Select стрелка и стиль */
-.select-wrapper {
-  position: relative;
-  width: 85%;
-  display: inline-block;
-}
-
+/* Select стрелка */
 select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   position: relative;
   padding-right: 40px;
-  width: 100%;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%23fff' d='M1.41 0L6 4.59L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0z'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 16px center;
   background-size: 12px 12px;
-  padding: 12px 16px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background-color: rgba(255,255,255,0.07);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  font-size: 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 select:hover {
-  background-color: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.12);
   border-color: rgba(0,200,83,0.6);
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%23fff' d='M1.41 0L6 4.59L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0z'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 12px 12px;
 }
 
 select:focus {
   outline: none;
   border-color: #00c853;
   box-shadow: 0 0 12px rgba(0,200,83,0.6);
-  background-color: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.1);
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%2300c853' d='M1.41 0L6 4.59L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0z'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 12px 12px;
 }
 
 select option {
@@ -210,16 +143,7 @@ select option {
 .btn.success { background: #00c853; color: #fff; }
 .btn.success:hover { background: #00a340; }
 
-/* ---------- Loading spinner (центрирован) ---------- */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
+/* ---------- Loading spinner ---------- */
 .loading-spinner {
   width: 40px;
   height: 40px;
@@ -234,15 +158,7 @@ select option {
   to { transform: rotate(360deg); }
 }
 
-/* ---------- Result info без скролла в основной области ---------- */
-.result-info-wrapper {
-  text-align: left;
-  width: 100%;
-  margin-bottom: 15px;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
+/* ---------- Result info ---------- */
 .result-header { text-align: center; width: 100%; margin-bottom: 15px; }
 .result-header h2 { margin-bottom: 5px; font-size: 20px; }
 .result-info { text-align: left; width: 100%; margin-bottom: 15px; }
@@ -250,24 +166,27 @@ select option {
 .info-label { color: #aaa; font-size: 12px; }
 .info-value { color: #fff; font-weight: 600; font-size: 12px; }
 
-/* ---------- Scrollbar для timeline ---------- */
+/* ---------- Scrollbar для timeline и любых скроллбаров ---------- */
+.scrollbar,
 .timeline {
-  max-height: 200px;
   overflow-y: auto;
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: #00c853 rgba(0, 0, 0, 0.1);
 }
 
 /* Webkit Scrollbar */
+.scrollbar::-webkit-scrollbar,
 .timeline::-webkit-scrollbar {
   width: 8px;
 }
 
+.scrollbar::-webkit-scrollbar-track,
 .timeline::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
 }
 
+.scrollbar::-webkit-scrollbar-thumb,
 .timeline::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #00ff73, #00c853);
   border-radius: 8px;
@@ -275,10 +194,12 @@ select option {
   background-clip: padding-box;
 }
 
+.scrollbar::-webkit-scrollbar-thumb:hover,
 .timeline::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #00ff93, #00e563);
 }
 
+.scrollbar::-webkit-scrollbar-thumb:active,
 .timeline::-webkit-scrollbar-thumb:active {
   background: linear-gradient(180deg, #00a340, #008a35);
 }
@@ -318,15 +239,6 @@ select option {
 .timeline-date {
   color: #888;
   font-size: 11px;
-}
-
-.timeline-line {
-  position: absolute;
-  left: 4px;
-  top: 17px;
-  width: 2px;
-  height: 20px;
-  background: linear-gradient(180deg, rgba(0, 200, 83, 0.3), rgba(0, 200, 83, 0.1));
 }
 
 /* ---------- Menu buttons ---------- */
@@ -414,271 +326,77 @@ select option {
 /* ---------- Loading text ---------- */
 .loading-text { margin-top: 10px; color: #aaa; font-size: 14px; }
 
-/* ===================== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===================== */
-@media (max-width: 768px) {
-  .header {
-    top: 20px;
-    font-size: 22px;
-  }
-
-  .card {
-    width: calc(100vw - 30px);
-    max-width: 460px;
-    height: auto;
-    min-height: 300px;
-    margin: 70px 15px 15px 15px;
-    padding: 20px;
-  }
-
-  .card.active-menu { 
-    width: calc(100vw - 30px);
-    max-width: 460px;
-    height: auto;
-  }
-  .card.active-check { 
-    width: calc(100vw - 30px);
-    max-width: 460px;
-    height: auto;
-  }
-  .card.active-result { 
-    width: calc(100vw - 30px);
-    max-width: 460px;
-    height: auto;
-  }
-  .card.active-create { 
-    width: calc(100vw - 30px);
-    max-width: 460px;
-    height: auto;
-  }
-  .card.active-loading { 
-    width: calc(100vw - 30px);
-    max-width: 460px;
-    height: auto;
-  }
-
-  .card-face {
-    padding: 24px;
-    gap: 12px;
-  }
-
-  input, select {
-    width: 100%;
-    font-size: 16px;
-    padding: 14px 12px;
-  }
-
-  .select-wrapper {
-    width: 100%;
-  }
-
-  h1 { font-size: 24px; }
-  h2 { font-size: 18px; }
-  p { font-size: 14px; }
-
-  .btn {
-    padding: 10px 24px;
-    font-size: 14px;
-    flex: 1;
-    min-width: 100px;
-  }
-
-  .menu-btn {
-    width: 100%;
-    padding: 14px 16px;
-    font-size: 15px;
-  }
-
-  .menu-buttons {
-    width: 100%;
-  }
-
-  .buttons {
-    width: 100%;
-    gap: 8px;
-  }
-
-  #notification-container {
-    width: calc(100vw - 20px);
-    right: 10px;
-    left: 10px;
-    top: 10px;
-  }
-
-  .notification {
-    width: 100%;
-  }
-
-  #error-banner {
-    width: calc(100vw - 30px);
-    min-width: auto;
-  }
-
-  .result-info-wrapper {
-    max-height: 300px;
-  }
-
-  .timeline {
-    max-height: 150px;
-  }
-
-  .info-row {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .info-label, .info-value {
-    font-size: 13px;
-  }
-
-  .timeline-item {
-    margin-bottom: 10px;
-  }
-
-  .timeline-status {
-    font-size: 13px;
-  }
-
-  .timeline-date {
-    font-size: 12px;
-  }
+/* ===================== 1. Скрыть скролл в меню информации обращения ===================== */
+#resultContent .timeline.scrollbar {
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
 }
-
-/* Для очень маленьких экранов (до 480px) */
-@media (max-width: 480px) {
-  .header {
-    top: 15px;
-    font-size: 18px;
-  }
-
-  .card {
-    width: calc(100vw - 20px);
-    margin: 60px 10px 10px 10px;
-    padding: 16px;
-    border-radius: 16px;
-  }
-
-  .card-face {
-    padding: 16px;
-    gap: 10px;
-  }
-
-  h1 { font-size: 20px; }
-  h2 { font-size: 16px; }
-
-  .btn {
-    padding: 10px 20px;
-    font-size: 13px;
-  }
-
-  .menu-btn {
-    width: 100%;
-    padding: 12px 14px;
-    font-size: 13px;
-  }
-
-  input, select {
-    padding: 12px 10px;
-    font-size: 15px;
-  }
-
-  .loading-spinner {
-    width: 35px;
-    height: 35px;
-    border: 2px solid rgba(255,255,255,0.2);
-    border-top: 2px solid #00c853;
-  }
-
-  #notification-container {
-    width: calc(100vw - 10px);
-    right: 5px;
-  }
-
-  .info-label, .info-value {
-    font-size: 12px;
-  }
-
-  .result-header h2 {
-    font-size: 16px;
-  }
-}
-/* ===================== 1. Убираем полоску скролла в меню информации обращения ===================== */
-#resultContent .timeline {
-  overflow-y: auto; /* скролл работает при переполнении */
-  scrollbar-width: none; /* Firefox */
-}
-#resultContent .timeline::-webkit-scrollbar {
-  width: 0px; /* скрываем полосу */
-  background: transparent;
+#resultContent .timeline.scrollbar::-webkit-scrollbar {
+  width: 0px !important;
+  background: transparent !important;
 }
 
 /* ===================== 2. Новый стиль Select в "Создание обращения" ===================== */
 .card-create select {
-  width: 85%;
-  padding: 12px 16px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(8px);
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  width: 85% !important;
+  padding: 12px 16px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  background: rgba(255,255,255,0.05) !important;
+  backdrop-filter: blur(8px) !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
 }
-
 .card-create select:hover {
-  border-color: #00c853;
-  background: rgba(0, 200, 83, 0.1);
+  border-color: #00c853 !important;
+  background: rgba(0,200,83,0.1) !important;
 }
-
 .card-create select:focus {
-  outline: none;
-  border-color: #00c853;
-  box-shadow: 0 0 12px rgba(0,200,83,0.4);
-  background: rgba(0, 200, 83, 0.08);
+  outline: none !important;
+  border-color: #00c853 !important;
+  box-shadow: 0 0 12px rgba(0,200,83,0.4) !important;
+  background: rgba(0,200,83,0.08) !important;
 }
-
 .card-create select option {
-  background: #1b1b1b;
-  color: #fff;
-  padding: 12px;
+  background: #1b1b1b !important;
+  color: #fff !important;
+  padding: 12px !important;
 }
 
-/* ===================== 3. Центрируем загрузку при поиске ===================== */
+/* ===================== 3. Центрируем загрузку ===================== */
 .card-loading #loadingContent {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  text-align: center;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100% !important;
+  text-align: center !important;
 }
 
-/* ===================== 4. Адаптация под мобильные устройства ===================== */
+/* ===================== 4. Мобильная адаптация ===================== */
 @media (max-width: 480px) {
   .card {
-    width: 90%;
-    height: auto;
-    padding: 20px;
+    width: 90% !important;
+    height: auto !important;
+    padding: 20px !important;
   }
-
   .card-create input,
   .card-create select,
   .card-check input,
   .menu-btn,
   .btn {
-    width: 100%;
-    font-size: 14px;
-    padding: 10px;
+    width: 100% !important;
+    font-size: 14px !important;
+    padding: 10px !important;
   }
-
   .card-loading,
   .card-result {
-    height: auto;
+    height: auto !important;
   }
-
   .header {
-    font-size: 22px;
-    top: 20px;
+    font-size: 22px !important;
+    top: 20px !important;
   }
 }
-

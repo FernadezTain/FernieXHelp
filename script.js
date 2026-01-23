@@ -203,7 +203,7 @@ checkBtn.addEventListener('click', () => {
         renderTimeline(ticket.history);
 
         loadingContent.style.display = 'none';
-        resultContent.style.display = 'block';
+        resultContent.style.display = 'flex';
 
         showNotification('Успешно', 'Обращение найдено');
     }, 1200);
@@ -279,34 +279,37 @@ if (!isMobile && window.innerWidth > 768) {
 }
 
 // =====================
-// ИСПРАВЛЕНИЕ СДВИГА НА ТЕЛЕФОНЕ
+// ИСПРАВЛЕНИЕ ЦЕНТРИРОВАНИЯ НА МОБИЛЬНЫХ
 // =====================
-document.addEventListener('DOMContentLoaded', () => {
-    // Принудительное центрирование на мобильных
-    if (window.innerWidth <= 480) {
-        document.body.style.justifyContent = 'flex-start';
-        document.body.style.alignItems = 'center';
-        document.body.style.paddingTop = '10px';
+function fixMobileCentering() {
+    if (window.innerWidth <= 768) {
+        // Принудительное центрирование всех элементов
+        const allElements = [card, document.querySelector('.scene'), document.querySelector('.header')];
         
-        // Центрируем все элементы
-        const allCenteredElements = document.querySelectorAll('.card, .header, .scene');
-        allCenteredElements.forEach(el => {
-            el.style.marginLeft = 'auto';
-            el.style.marginRight = 'auto';
+        allElements.forEach(el => {
+            if (el) {
+                el.style.marginLeft = 'auto';
+                el.style.marginRight = 'auto';
+                el.style.left = '0';
+                el.style.right = '0';
+            }
         });
+        
+        // Центрирование body
+        document.body.style.display = 'flex';
+        document.body.style.flexDirection = 'column';
+        document.body.style.alignItems = 'center';
+        document.body.style.justifyContent = 'flex-start';
+        document.body.style.width = '100%';
+        document.body.style.overflowX = 'hidden';
     }
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+    fixMobileCentering();
+    startBtn.focus();
 });
 
-// =====================
-// ОБРАБОТКА ИЗМЕНЕНИЯ РАЗМЕРА ОКНА
-// =====================
-window.addEventListener('resize', () => {
-    // Перепроверяем центрирование при изменении размера
-    if (window.innerWidth <= 480) {
-        document.body.style.justifyContent = 'flex-start';
-        document.body.style.alignItems = 'center';
-    } else {
-        document.body.style.justifyContent = 'center';
-        document.body.style.alignItems = 'center';
-    }
-});
+// Пересчет при изменении размера окна
+window.addEventListener('resize', fixMobileCentering);

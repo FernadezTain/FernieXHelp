@@ -38,6 +38,66 @@ let searchTimeout = null;
 let errorTimeout = null;
 let activeNotification = null;
 let notificationHideTimeout = null;
+let selectedType = '';
+
+// =====================
+// КАСТОМНЫЙ SELECT
+// =====================
+const typeSelectCustom = document.getElementById('typeSelectCustom');
+const selectHeader = typeSelectCustom.querySelector('.select-header');
+const selectDropdown = typeSelectCustom.querySelector('.select-dropdown');
+const selectOptions = typeSelectCustom.querySelectorAll('.select-option');
+const selectValue = selectHeader.querySelector('.select-value');
+
+// Открытие/закрытие dropdown
+selectHeader.addEventListener('click', (e) => {
+    e.stopPropagation();
+    selectHeader.classList.toggle('active');
+    selectDropdown.classList.toggle('active');
+});
+
+// Выбор опции
+selectOptions.forEach(option => {
+    option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const value = option.getAttribute('data-value');
+        selectedType = value;
+        typeSelect.value = value;
+
+        // Обновляем UI
+        selectOptions.forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+
+        // Обновляем текст в header
+        if (value === '') {
+            selectValue.textContent = 'Выберите тип обращения';
+            selectHeader.classList.add('empty');
+        } else {
+            selectValue.textContent = option.textContent;
+            selectHeader.classList.remove('empty');
+        }
+
+        // Закрываем dropdown
+        selectHeader.classList.remove('active');
+        selectDropdown.classList.remove('active');
+    });
+});
+
+// Закрытие при клике вне
+document.addEventListener('click', (e) => {
+    if (!typeSelectCustom.contains(e.target)) {
+        selectHeader.classList.remove('active');
+        selectDropdown.classList.remove('active');
+    }
+});
+
+// Закрытие на Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        selectHeader.classList.remove('active');
+        selectDropdown.classList.remove('active');
+    }
+});
 
 // =====================
 // СЛАЙД НАВИГАЦИЯ (ГЛАВНОЕ)
@@ -205,7 +265,7 @@ checkBtn.addEventListener('click', () => {
 // =====================
 createSubmitBtn.addEventListener('click', () => {
     const nick = nickInput.value.trim();
-    const type = typeSelect.value;
+    const type = selectedType || typeSelect.value;
 
     if (!nick) return showError('Введите Nick!');
     if (!type) return showError('Выберите тип!');

@@ -26,6 +26,9 @@ const notificationContainer = document.getElementById('notification-container');
 const loadingContent = document.getElementById('loadingContent');
 const resultContent = document.getElementById('resultContent');
 
+// ЭЛЕМЕНТ ДЛЯ ЗАГОЛОВКА
+const ticketNumberElement = document.getElementById('ticketNumber');
+
 const faces = document.querySelectorAll('.card-face');
 const faceMain = document.querySelector('.card-main');
 const faceMenu = document.querySelector('.card-menu');
@@ -189,7 +192,9 @@ checkBtn.addEventListener('click', () => {
     setTimeout(() => {
         const ticket = ticketsData[ticketNum];
 
-        document.getElementById('ticketNumber').textContent = `Обращение №${ticketNum}`;
+        // УСТАНАВЛИВАЕМ ЗАГОЛОВОК "Обращение №__"
+        ticketNumberElement.textContent = `Обращение №${ticketNum}`;
+        
         document.getElementById('resultUser').textContent = ticket.user;
         document.getElementById('resultAdmin').textContent = ticket.admin;
         document.getElementById('resultDate').textContent = ticket.created;
@@ -274,24 +279,34 @@ if (!isMobile && window.innerWidth > 768) {
 }
 
 // =====================
-// ПЕРЕОРИЕНТАЦИЯ ЭКРАНА
+// ИСПРАВЛЕНИЕ СДВИГА НА ТЕЛЕФОНЕ
 // =====================
-window.addEventListener('resize', () => {
+document.addEventListener('DOMContentLoaded', () => {
+    // Принудительное центрирование на мобильных
     if (window.innerWidth <= 480) {
-        document.body.style.paddingTop = '60px';
-    } else {
-        document.body.style.paddingTop = '20px';
+        document.body.style.justifyContent = 'flex-start';
+        document.body.style.alignItems = 'center';
+        document.body.style.paddingTop = '10px';
+        
+        // Центрируем все элементы
+        const allCenteredElements = document.querySelectorAll('.card, .header, .scene');
+        allCenteredElements.forEach(el => {
+            el.style.marginLeft = 'auto';
+            el.style.marginRight = 'auto';
+        });
     }
 });
 
 // =====================
-// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+// ОБРАБОТКА ИЗМЕНЕНИЯ РАЗМЕРА ОКНА
 // =====================
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('resize', () => {
+    // Перепроверяем центрирование при изменении размера
     if (window.innerWidth <= 480) {
-        document.body.style.paddingTop = '60px';
+        document.body.style.justifyContent = 'flex-start';
+        document.body.style.alignItems = 'center';
+    } else {
+        document.body.style.justifyContent = 'center';
+        document.body.style.alignItems = 'center';
     }
-    
-    // Фокус на главной кнопке для лучшей доступности
-    startBtn.focus();
 });

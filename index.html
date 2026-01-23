@@ -46,7 +46,7 @@
       <!-- РЕЗУЛЬТАТ ПОИСКА И ЗАГРУЗКА -->
       <div class="card-face card-loading">
 
-        <div id="loadingContent">
+        <div id="loadingContent" class="loading-container">
           <h2>Поиск обращения...</h2>
           <div class="loading-spinner"></div>
           <div class="loading-text" id="loadingText"></div>
@@ -57,7 +57,8 @@
 
         <div id="resultContent" style="display: none; width: 100%;">
           <div class="result-header">
-            <h2 id="ticketNumber">Обращение №</h2>
+            <!-- ЗАГОЛОВОК БУДЕТ ДОБАВЛЕН СКРИПТОМ -->
+            <h2 id="ticketNumber"></h2>
           </div>
 
           <div class="result-info">

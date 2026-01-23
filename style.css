@@ -4,6 +4,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Inter, system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -16,6 +17,7 @@ body {
   padding: 20px;
   width: 100%;
   position: relative;
+  touch-action: pan-y;
 }
 
 .header {
@@ -242,7 +244,6 @@ input, select {
   max-width: 320px;
   cursor: pointer;
   transition: all 0.3s ease;
-  -webkit-tap-highlight-color: transparent;
 }
 
 @media (max-width: 480px) {
@@ -330,7 +331,10 @@ input::placeholder { color: #888; }
   font-size: 16px;
   flex: 1;
   min-width: 120px;
-  -webkit-tap-highlight-color: transparent;
+  max-width: 200px; /* Ограничиваем максимальную ширину */
+  height: auto; /* Убираем фиксированную высоту */
+  min-height: 44px; /* Минимальная высота для касания */
+  white-space: nowrap; /* Запрещаем перенос текста */
 }
 
 @media (max-width: 480px) {
@@ -338,6 +342,7 @@ input::placeholder { color: #888; }
     padding: 12px 24px;
     font-size: 15px;
     min-width: 110px;
+    min-height: 42px;
   }
 }
 
@@ -377,6 +382,7 @@ input::placeholder { color: #888; }
   text-align: center; 
   width: 100%; 
   margin-bottom: 15px; 
+  flex-shrink: 0;
 }
 .result-header h2 { 
   margin-bottom: 5px; 
@@ -412,6 +418,7 @@ input::placeholder { color: #888; }
   overflow: hidden;
   margin-bottom: 15px;
   flex: 1;
+  min-height: 100px;
 }
 
 .timeline {
@@ -422,6 +429,11 @@ input::placeholder { color: #888; }
   padding-right: 5px;
   scrollbar-width: thin;
   scrollbar-color: #00c853 rgba(0, 0, 0, 0.1);
+  /* Разрешаем прокрутку касанием */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  /* Убедимся, что скролл работает */
+  position: relative;
 }
 
 /* Для результата контента - flex контейнер */
@@ -430,6 +442,8 @@ input::placeholder { color: #888; }
   flex-direction: column;
   height: 100%;
   padding: 20px;
+  overflow: hidden; /* Убираем общий скролл */
+  position: relative;
 }
 
 @media (max-width: 768px) {
@@ -484,6 +498,7 @@ input::placeholder { color: #888; }
   margin-bottom: 12px;
   position: relative;
   padding-left: 15px;
+  touch-action: pan-y; /* Разрешаем вертикальную прокрутку */
 }
 
 .timeline-dot {
@@ -500,6 +515,7 @@ input::placeholder { color: #888; }
 
 .timeline-content {
   flex: 1;
+  user-select: none; /* Запрещаем выделение текста при скролле */
 }
 
 .timeline-status {
@@ -533,13 +549,21 @@ input::placeholder { color: #888; }
   cursor: pointer;
   transition: 0.2s;
   font-size: 16px;
-  -webkit-tap-highlight-color: transparent;
+  height: auto; /* Убираем растягивание */
+  min-height: 50px; /* Минимальная высота */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: normal; /* Разрешаем перенос текста */
+  text-align: center;
+  line-height: 1.3;
 }
 
 @media (max-width: 480px) {
   .menu-btn {
     padding: 14px 18px;
     font-size: 15px;
+    min-height: 46px;
   }
 }
 
@@ -681,4 +705,48 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* ---------- Исправляем проблему с кнопками в главном меню ---------- */
+.card-main .btn {
+  max-width: 200px;
+  width: auto;
+  flex: 0 0 auto; /* Не растягиваем кнопку */
+  margin-top: 10px;
+}
+
+.card-main {
+  justify-content: center;
+  gap: 20px;
+}
+
+/* ---------- Улучшаем скролл для мобильных ---------- */
+@media (max-width: 768px) {
+  .timeline {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
+  
+  /* Убедимся, что весь контент можно скроллить если нужно */
+  .card.active-result,
+  .card.active-loading {
+    overflow: hidden;
+  }
+  
+  #resultContent {
+    height: calc(100% - 40px);
+  }
+}
+
+/* ---------- Запрещаем selection при скролле ---------- */
+.timeline * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* ---------- Улучшаем отзывчивость касаний ---------- */
+.btn, .menu-btn, input, select {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
 }

@@ -93,14 +93,35 @@
       <div class="card-face card-create">
         <h2>Создание обращения</h2>
         <input type="text" id="nickInput" placeholder="Введите ваш Nick" style="width: 85%;">
-        <select id="typeSelect" style="width: 85%;">
-          <option value="">Выберите тип обращения</option>
-          <option value="bug">Баг / Ошибка</option>
-          <option value="suggest">Предложение</option>
-          <option value="question">Вопрос</option>
-          <option value="complaint">Жалоба</option>
-          <option value="other">Другое</option>
-        </select>
+        
+        <!-- Красивый кастомный select -->
+        <div class="custom-select-wrapper" style="width: 85%;">
+          <div class="custom-select" id="typeSelectCustom">
+            <div class="select-header">
+              <span class="select-value">Выберите тип обращения</span>
+              <svg class="select-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="select-dropdown">
+              <div class="select-option" data-value="">Выберите тип обращения</div>
+              <div class="select-option" data-value="bug">🐛 Баг / Ошибка</div>
+              <div class="select-option" data-value="suggest">💡 Предложение</div>
+              <div class="select-option" data-value="question">❓ Вопрос</div>
+              <div class="select-option" data-value="complaint">⚠️ Жалоба</div>
+              <div class="select-option" data-value="other">📋 Другое</div>
+            </div>
+          </div>
+          <select id="typeSelect" style="display: none;">
+            <option value="">Выберите тип обращения</option>
+            <option value="bug">Баг / Ошибка</option>
+            <option value="suggest">Предложение</option>
+            <option value="question">Вопрос</option>
+            <option value="complaint">Жалоба</option>
+            <option value="other">Другое</option>
+          </select>
+        </div>
+
         <div class="buttons">
           <button class="btn" id="createBackBtn">Назад</button>
           <button class="btn success" id="createSubmitBtn">Создать</button>
@@ -108,10 +129,6 @@
       </div>
 
     </div>
-  </div>
-
-  <div class="result-info">
-    <div class="timeline scrollbar" id="timeline" style="max-height: 200px;"></div>
   </div>
 
   <div id="notification-container"></div>

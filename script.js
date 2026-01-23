@@ -203,43 +203,36 @@ function renderTimeline(history) {
 // =====================
 
 startBtn.addEventListener('click', () => {
-    card.classList.remove('active-main');
-    card.classList.add('active-menu');
+    card.className = 'card active-menu';
 });
 
 backToMainBtn.addEventListener('click', () => {
-    card.classList.remove('active-menu', 'active-check', 'active-loading', 'active-create');
-    card.classList.add('active-main');
+    card.className = 'card active-main';
 });
 
 checkStatusBtn.addEventListener('click', () => {
-    card.classList.remove('active-menu');
-    card.classList.add('active-check');
+    card.className = 'card active-check';
     ticketInput.value = '';
     setTimeout(() => ticketInput.focus(), 100);
 });
 
 createBtn.addEventListener('click', () => {
-    card.classList.remove('active-menu');
-    card.classList.add('active-create');
+    card.className = 'card active-create';
     nickInput.value = '';
     typeSelect.value = '';
     setTimeout(() => nickInput.focus(), 100);
 });
 
 checkBackBtn.addEventListener('click', () => {
-    card.classList.remove('active-check');
-    card.classList.add('active-menu');
+    card.className = 'card active-menu';
 });
 
 createBackBtn.addEventListener('click', () => {
-    card.classList.remove('active-create');
-    card.classList.add('active-menu');
+    card.className = 'card active-menu';
 });
 
 resultBackBtn.addEventListener('click', () => {
-    card.classList.remove('active-result');
-    card.classList.add('active-check');
+    card.className = 'card active-check';
     ticketInput.value = '';
     loadingContent.style.display = 'block';
     resultContent.style.display = 'none';
@@ -265,8 +258,7 @@ checkBtn.addEventListener('click', () => {
         return;
     }
 
-    card.classList.remove('active-check');
-    card.classList.add('active-loading');
+    card.className = 'card active-loading';
 
     const loadingTime = getRandomLoadingTime();
     const loadingText = document.getElementById('loadingText');
@@ -292,8 +284,7 @@ checkBtn.addEventListener('click', () => {
 
 cancelBtn.addEventListener('click', () => {
     clearTimeout(searchTimeout);
-    card.classList.remove('active-loading');
-    card.classList.add('active-check');
+    card.className = 'card active-check';
     loadingContent.style.display = 'block';
     resultContent.style.display = 'none';
 });
@@ -316,8 +307,7 @@ createSubmitBtn.addEventListener('click', () => {
         return;
     }
 
-    card.classList.remove('active-create');
-    card.classList.add('active-loading');
+    card.className = 'card active-loading';
     loadingContent.innerHTML = `
         <h2>Создание обращения...</h2>
         <div class="loading-spinner"></div>
@@ -331,8 +321,7 @@ createSubmitBtn.addEventListener('click', () => {
         showNotification('Переход в Telegram', 'Бот FernieX будет загружен');
         
         setTimeout(() => {
-            card.classList.remove('active-loading', 'active-create');
-            card.classList.add('active-menu');
+            card.className = 'card active-menu';
             loadingContent.innerHTML = `
                 <h2>Поиск обращения...</h2>
                 <div class="loading-spinner"></div>

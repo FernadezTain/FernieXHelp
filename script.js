@@ -16,6 +16,7 @@ const createSubmitBtn = document.getElementById('createSubmitBtn');
 
 const ticketInput = document.getElementById('ticketInput');
 const nickInput = document.getElementById('nickInput');
+const typeSelect = document.getElementById('typeSelect');
 
 const errorBanner = document.getElementById('error-banner');
 const errorMessage = document.getElementById('error-message');
@@ -37,80 +38,6 @@ let searchTimeout = null;
 let errorTimeout = null;
 let activeNotification = null;
 let notificationHideTimeout = null;
-let selectedType = '';
-
-// =====================
-// КАСТОМНЫЙ SELECT
-// =====================
-function initCustomSelect() {
-    const typeSelectCustom = document.getElementById('typeSelectCustom');
-    if (!typeSelectCustom) return;
-
-    const selectHeader = typeSelectCustom.querySelector('.select-header');
-    const selectDropdown = typeSelectCustom.querySelector('.select-dropdown');
-    const selectOptions = typeSelectCustom.querySelectorAll('.select-option');
-    const selectValue = selectHeader.querySelector('.select-value');
-
-    // Открытие/закрытие dropdown
-    selectHeader.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const isActive = selectHeader.classList.contains('active');
-        closeAllSelects();
-        if (!isActive) {
-            selectHeader.classList.add('active');
-            selectDropdown.classList.add('active');
-        }
-    });
-
-    // Выбор опции
-    selectOptions.forEach(option => {
-        option.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const value = this.getAttribute('data-value');
-            selectedType = value;
-
-            // Обновляем UI
-            selectOptions.forEach(opt => opt.classList.remove('selected'));
-            this.classList.add('selected');
-
-            // Обновляем текст в header
-            if (value === '') {
-                selectValue.textContent = 'Выберите тип обращения';
-                selectHeader.classList.add('empty');
-            } else {
-                selectValue.textContent = this.textContent;
-                selectHeader.classList.remove('empty');
-            }
-
-            // Закрываем dropdown
-            closeAllSelects();
-        });
-    });
-}
-
-function closeAllSelects() {
-    const allHeaders = document.querySelectorAll('.select-header');
-    const allDropdowns = document.querySelectorAll('.select-dropdown');
-    allHeaders.forEach(h => h.classList.remove('active'));
-    allDropdowns.forEach(d => d.classList.remove('active'));
-}
-
-// Закрытие при клике вне
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.custom-select')) {
-        closeAllSelects();
-    }
-});
-
-// Закрытие на Escape
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeAllSelects();
-    }
-});
-
-// Инициализируем select
-initCustomSelect();
 
 // =====================
 // СЛАЙД НАВИГАЦИЯ (ГЛАВНОЕ)
@@ -251,7 +178,7 @@ checkBtn.addEventListener('click', () => {
     if (!ticketsData[ticketNum]) return showError('Обращение не найдено!');
 
     slideTo(faceLoading);
-    loadingContent.style.display = 'block';
+    loadingContent.style.display = 'flex';
     resultContent.style.display = 'none';
 
     setTimeout(() => {
@@ -278,7 +205,7 @@ checkBtn.addEventListener('click', () => {
 // =====================
 createSubmitBtn.addEventListener('click', () => {
     const nick = nickInput.value.trim();
-    const type = selectedType;
+    const type = typeSelect.value;
 
     if (!nick) return showError('Введите Nick!');
     if (!type) return showError('Выберите тип!');
